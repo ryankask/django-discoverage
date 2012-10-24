@@ -21,16 +21,15 @@ class DiscoverageRunner(DiscoverRunner):
         return self._suite
 
     def run_tests(self, test_labels, extra_tests=None, **kwargs):
-        suite = self.build_suite(test_labels, extra_tests)
-        apps = find_coverage_apps(suite)
-        cov = coverage.coverage(source=apps, omit=OMIT_MODULES)
-
+        cov = coverage.coverage(omit=OMIT_MODULES)
         cov.start()
         result = super(DiscoverageRunner, self).run_tests(test_labels,
                                                           extra_tests=None,
                                                           **kwargs)
         cov.stop()
 
+        suite = self.build_suite(test_labels, extra_tests)
+        apps = find_coverage_apps(suite)
         module_data = get_all_modules(apps, [], [])
         print
         cov.report(module_data[1].values())
