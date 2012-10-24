@@ -14,7 +14,7 @@ def get_readme():
 def get_version():
     with open(pkg_path('discoverage', '__init__.py'), 'r') as init:
         contents = init.read()
-        match = re.search(r'^__version__ = [\'"]([.\w]+)[\'"]', contents)
+        match = re.search(r'__version__ = [\'"]([.\w]+)[\'"]', contents)
         return match.group(1)
 
 setup(
