@@ -1,15 +1,32 @@
 import coverage
+from django.utils.importlib import import_module
 from django_coverage.utils.module_tools import get_all_modules
 from discover_runner import DiscoverRunner
 
 from discoverage.settings import OMIT_MODULES, APPS_TEST_CASE_ATTR
 
+def get_apps(obj):
+    return list(getattr(obj, APPS_TEST_CASE_ATTR, []))
+
 def find_coverage_apps(suite):
     coverage_apps = set()
+    inspected_modules = set()
+
     for test in suite:
-        apps = getattr(test, APPS_TEST_CASE_ATTR, ())
-        for app in apps:
-            coverage_apps.add(app)
+        test_apps = get_apps(test)
+
+        if test.__module__ not in inspected_modules:
+            test_module = import_module(test.__module__)
+            test_apps.extend(get_apps(test_module))
+            inspected_modules.add(test.__module__)
+
+            if test_module.__package__ not in inspected_modules:
+                test_package = import_module(test_module.__package__)
+                test_apps.extend(get_apps(test_package))
+                inspected_modules.add(test_module.__package__)
+
+        coverage_apps.update(test_apps)
+
     return list(coverage_apps)
 
 

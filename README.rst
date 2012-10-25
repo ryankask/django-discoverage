@@ -13,17 +13,27 @@ One of the objectives of ``django-discover-runner`` is to allow separating a
 Django app's tests from the code it's testing. Since tests no longer reside in
 an app, ``django-discoverage`` needs a different way to know which apps to
 include in the coverage report. It currently collects apps (packages) by looking
-for an attribute (by default ``TESTS_APPS``) on each ``TestCase`` instance in
-the suite.
+for an iterable (named by default ``TESTS_APPS``) in three places:
 
-For example::
+1. On a ``TestCase`` instance in the suite.
+2. In the ``TestCase`` subclass's module (``test_*.py`` by default).
+3. In the ``TestCase`` instance's immediate package. If ``MyTestCase`` is in the
+   package ``tests.myapp.test_views``, the runner inspects ``tests.myapp``. It does
+   not currently traverse parent packages.
+
+Let's say you had the following test module, ``tests.blog.test_views``::
+
+    TESTS_APPS = ('blog',)
 
     class MyTestCase(TestCase):
         TESTS_APPS = ('mycoolapp', 'myproject.anothercoolapp')
         ...
 
-All modules in the listed apps (except those specified in ``OMIT_MODULES``) will
-appear in the standard ``coverage`` report.
+All the modules in apps ``blog``, ``mycoolapp``, and
+``myproject.anothercoolapp`` will be included in the report along with any apps
+``test.blog.TESTS_APPS``.
+
+Modules specified in ``OMIT_MODULES`` will *not*, however, appear in the report.
 
 Settings
 --------
