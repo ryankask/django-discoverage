@@ -62,7 +62,9 @@ class DiscoverageRunner(DiscoverRunner):
         suite = self.build_suite(test_labels, extra_tests)
         apps = find_coverage_apps(suite)
         app_modules = get_all_modules(apps)
-        print
-        cov.report(app_modules)
+
+        if app_modules:
+            print
+            cov.report(app_modules)
 
         return result
