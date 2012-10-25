@@ -39,8 +39,9 @@ Modules specified in ``OMIT_MODULES`` will *not*, however, appear in the report.
 Settings
 --------
 
-``APPS_TEST_CASE_ATTR``
-  The attribute ``django-discoverage`` looks for on each ``TestCase`` instance.
+``TESTED_APPS_VAR_NAME``
+  The name of the iterable ``django-discoverage`` looks for in the three places
+  listed above.
 
 ``OMIT_MODULES``
   Modules not to be traced by ``coverage``. See the `coverage API

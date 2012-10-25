@@ -1,7 +1,8 @@
 from django.conf import settings
 
-# The attriute on each test case that determines which apps to trace
-APPS_TEST_CASE_ATTR = getattr(settings, 'APPS_TEST_CASE_ATTR', 'TESTS_APPS')
+# The name of the iterable ``django-discoverage`` looks for in the discovery
+# process
+TESTED_APPS_VAR_NAME = getattr(settings, 'TESTED_APPS_VAR_NAME', 'TESTS_APPS')
 
 # Modules not to trace
 OMIT_MODULES = getattr(settings, 'OMIT_MODULES', ['*test*'])

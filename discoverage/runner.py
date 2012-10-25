@@ -3,10 +3,10 @@ from django.utils.importlib import import_module
 from discover_runner import DiscoverRunner
 from pkgutil import walk_packages
 
-from discoverage.settings import OMIT_MODULES, APPS_TEST_CASE_ATTR
+from discoverage.settings import OMIT_MODULES, TESTED_APPS_VAR_NAME
 
 def get_apps(obj):
-    return list(getattr(obj, APPS_TEST_CASE_ATTR, []))
+    return list(getattr(obj, TESTED_APPS_VAR_NAME, []))
 
 def find_coverage_apps(suite):
     coverage_apps = set()
