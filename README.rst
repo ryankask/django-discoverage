@@ -10,9 +10,9 @@ Inspired by `django-coverage <https://bitbucket.org/kmike/django-coverage/>`_.
 Usage
 -----
 
-One of the objectives of ``django-discover-runner`` is to allow separating a
-Django app's tests from the code it's testing. Since tests no longer reside in
-an app, ``django-discoverage`` needs a different way to know which apps to
+One of the objectives of ``django-discover-runner`` is to allow the separation
+of a Django app's tests from the code it's testing. Since tests no longer reside
+in an app, ``django-discoverage`` needs a different way to know which apps to
 include in the coverage report. It currently collects apps (packages) by looking
 for an iterable (named by default ``TESTS_APPS``) in three places:
 
@@ -41,13 +41,13 @@ Settings
 
 ``TESTED_APPS_VAR_NAME``
   The name of the iterable ``django-discoverage`` looks for in the three places
-  listed above.
+  listed above. Defaults to ``TESTS_APPS``.
 
 ``OMIT_MODULES``
   Modules not to be traced by ``coverage``. See the `coverage API
   documentation
   <http://nedbatchelder.com/code/coverage/api.html#coverage.coverage>`_ for more
-  details.
+  details. Defaults to ``['*test*']``.
 
 TODO
 ----
