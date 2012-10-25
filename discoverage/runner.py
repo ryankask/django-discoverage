@@ -1,7 +1,7 @@
 import coverage
 from django.utils.importlib import import_module
-from django_coverage.utils.module_tools import get_all_modules
 from discover_runner import DiscoverRunner
+from pkgutil import walk_packages
 
 from discoverage.settings import OMIT_MODULES, APPS_TEST_CASE_ATTR
 
@@ -29,6 +29,20 @@ def find_coverage_apps(suite):
 
     return list(coverage_apps)
 
+def get_all_modules(apps):
+    modules = set()
+
+    for app in apps:
+        app_module = import_module(app)
+        modules.add(app_module)
+        app_path = app_module.__path__
+
+        for pkg_data in walk_packages(app_path, prefix=u'{0}.'.format(app)):
+            current_module = import_module(pkg_data[1])
+            modules.add(current_module)
+
+    return list(modules)
+
 
 class DiscoverageRunner(DiscoverRunner):
     def build_suite(self, *args, **kwargs):
@@ -47,8 +61,8 @@ class DiscoverageRunner(DiscoverRunner):
 
         suite = self.build_suite(test_labels, extra_tests)
         apps = find_coverage_apps(suite)
-        module_data = get_all_modules(apps, [], [])
+        app_modules = get_all_modules(apps)
         print
-        cov.report(module_data[1].values())
+        cov.report(app_modules)
 
         return result

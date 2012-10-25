@@ -24,11 +24,7 @@ setup(
     author_email='dev@ryankaskel.com',
     url='https://github.com/ryankask/django-discoverage',
     packages=find_packages(),
-    install_requires=[
-        'coverage>=3.5.3',
-        'django-coverage>=1.2.2',
-        'django-discover-runner>=0.2.2'
-    ],
+    install_requires=['coverage>=3.5.3', 'django-discover-runner>=0.2.2'],
     description='Jannis Leidel and Carl Meyer\'s django-discover-runner with coverage.',
     long_description=get_readme(),
     license='BSD',

@@ -1,10 +1,11 @@
 django-discoverage
 ==================
 
-Combines Mikhail Korobov's `django-coverage
-<https://bitbucket.org/kmike/django-coverage/>`_ with Jannis Leidel and Carl
-Meyer's `django-discover-runner
+Adds `coverage <http://nedbatchelder.com/code/coverage/>`_ to Jannis Leidel and
+Carl Meyer's `django-discover-runner
 <https://github.com/jezdez/django-discover-runner>`_.
+
+Inspired by `django-coverage <https://bitbucket.org/kmike/django-coverage/>`_.
 
 Usage
 -----
