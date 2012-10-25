@@ -32,7 +32,7 @@ Let's say you had the following test module, ``tests.blog.test_views``::
 
 All modules in the apps ``blog``, ``mycoolapp``, and
 ``myproject.anothercoolapp`` will be included in the report along with any apps
-``test.blog.TESTS_APPS``.
+listed in ``test.blog.TESTS_APPS``.
 
 Modules specified in ``OMIT_MODULES`` will *not*, however, appear in the report.
 
