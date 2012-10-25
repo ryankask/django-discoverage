@@ -52,5 +52,4 @@ Settings
 TODO
 ----
 
-* Investigate discovering the apps being tested from the test modules imports
-  (this could be really annoying)
+* Add more settings to control ``coverage``
