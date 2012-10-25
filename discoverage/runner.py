@@ -55,7 +55,7 @@ class DiscoverageRunner(DiscoverRunner):
         cov = coverage.coverage(omit=OMIT_MODULES)
         cov.start()
         result = super(DiscoverageRunner, self).run_tests(test_labels,
-                                                          extra_tests=None,
+                                                          extra_tests,
                                                           **kwargs)
         cov.stop()
 
