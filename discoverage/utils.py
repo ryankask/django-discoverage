@@ -8,21 +8,27 @@ def get_apps(obj):
 
 def find_coverage_apps(suite):
     coverage_apps = set()
-    inspected_modules = set()
+    inspected = set()
 
     for test in suite:
+        class_name = repr(test.__class__)
+
+        if class_name in inspected:
+            continue
+
         test_apps = get_apps(test)
 
-        if test.__module__ not in inspected_modules:
+        if test.__module__ not in inspected:
             test_module = import_module(test.__module__)
             test_apps.extend(get_apps(test_module))
-            inspected_modules.add(test.__module__)
+            inspected.add(test.__module__)
 
-            if test_module.__package__ not in inspected_modules:
+            if test_module.__package__ not in inspected:
                 test_package = import_module(test_module.__package__)
                 test_apps.extend(get_apps(test_package))
-                inspected_modules.add(test_module.__package__)
+                inspected.add(test_module.__package__)
 
+        inspected.add(class_name)
         coverage_apps.update(test_apps)
 
     return list(coverage_apps)
