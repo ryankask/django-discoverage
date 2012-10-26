@@ -34,7 +34,7 @@ The second way in which ``django-discoverage`` finds apps is by looking for an
 iterable of app names (named by default ``TESTS_APPS``) in three places:
 
 1. On a ``TestCase`` instance in the suite.
-2. In the ``TestCase`` subclass's module (``test_*.py`` by default).
+2. In the ``TestCase`` subclass's module (``test*.py`` by default).
 3. In the ``TestCase`` subclass's immediate package. If ``MyTestCase`` is in the
    package ``tests.myapp.test_views``, the runner inspects ``tests.myapp``. It
    does not currently traverse parent packages.
