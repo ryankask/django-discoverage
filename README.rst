@@ -24,6 +24,12 @@ subpackage and appears in ``INSTALLED_APPS`` as ``myproject.blog``.
 
 This behavior is controlled by the ``PKG_NAME_APP_DISCOVERY`` setting.
 
+Although not on by default, tested apps can also be guessed from the name of the
+test's module. For example, if ``MODULE_NAME_APP_DISCOVERY`` is ``True`` and
+there is a module named ``tests.test_blog``, the ``blog`` app will be included
+in the report. You can override the regular expression used to extract the app
+name using the ``MODULE_NAME_DISCOVERY_PATTERN`` setting.
+
 The second way in which ``django-discoverage`` finds apps is by looking for an
 iterable of app names (named by default ``TESTS_APPS``) in three places:
 
@@ -53,6 +59,14 @@ Settings
 ``PKG_NAME_APP_DISCOVERY``
   Determines whether tested apps are guessed from a test module's package
   name. It is on by default.
+
+``MODULE_NAME_APP_DISCOVERY``
+  Determines whether tested apps are guessed from a test module's name.
+
+``MODULE_NAME_DISCOVERY_PATTERN``
+  A regular expression with a single capturing group that extracts the app name
+  from a module name (e.g. "blog" from ``test_blog``). Defaults to
+  ``"test_?(\w+)"``.
 
 ``TESTED_APPS_VAR_NAME``
   The name of the iterable ``django-discoverage`` looks for in the three places

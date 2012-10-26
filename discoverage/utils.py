@@ -1,8 +1,12 @@
+import re
+
 from django.conf import settings
 from django.utils.importlib import import_module
 from pkgutil import walk_packages
 
-from discoverage.settings import TESTED_APPS_VAR_NAME, PKG_NAME_APP_DISCOVERY
+from discoverage.settings import (TESTED_APPS_VAR_NAME, PKG_NAME_APP_DISCOVERY,
+                                  MODULE_NAME_APP_DISCOVERY,
+                                  MODULE_NAME_DISCOVERY_PATTERN)
 
 def get_apps(obj):
     return list(getattr(obj, TESTED_APPS_VAR_NAME, []))
@@ -24,14 +28,25 @@ def find_coverage_apps(suite):
             test_module = import_module(test.__module__)
             test_apps.extend(get_apps(test_module))
             inspected.add(test.__module__)
+            pkg = test_module.__package__
 
-            if test_module.__package__ not in inspected:
-                test_pkg = import_module(test_module.__package__)
+            if MODULE_NAME_APP_DISCOVERY:
+                module_name = test.__module__.split(pkg + '.')[-1]
+
+                try:
+                    guessed_app_name = re.match(MODULE_NAME_DISCOVERY_PATTERN,
+                                                module_name).group(1)
+                    test_apps.append(app_pkgs[guessed_app_name])
+                except (KeyError, AttributeError, IndexError):
+                    pass
+
+            if pkg not in inspected:
+                test_pkg = import_module(pkg)
                 test_apps.extend(get_apps(test_pkg))
-                inspected.add(test_module.__package__)
+                inspected.add(pkg)
 
                 if PKG_NAME_APP_DISCOVERY:
-                    subpkg = test_module.__package__.split('.')[-1]
+                    subpkg = pkg.split('.')[-1]
                     try:
                         test_apps.append(app_pkgs[subpkg])
                     except KeyError:
