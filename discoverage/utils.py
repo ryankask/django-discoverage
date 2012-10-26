@@ -1,7 +1,8 @@
+from django.conf import settings
 from django.utils.importlib import import_module
 from pkgutil import walk_packages
 
-from discoverage.settings import TESTED_APPS_VAR_NAME
+from discoverage.settings import TESTED_APPS_VAR_NAME, PKG_NAME_APP_DISCOVERY
 
 def get_apps(obj):
     return list(getattr(obj, TESTED_APPS_VAR_NAME, []))
@@ -9,6 +10,7 @@ def get_apps(obj):
 def find_coverage_apps(suite):
     coverage_apps = set()
     inspected = set()
+    app_pkgs = dict((app.split('.')[-1], app) for app in settings.INSTALLED_APPS)
 
     for test in suite:
         class_name = repr(test.__class__)
@@ -24,9 +26,16 @@ def find_coverage_apps(suite):
             inspected.add(test.__module__)
 
             if test_module.__package__ not in inspected:
-                test_package = import_module(test_module.__package__)
-                test_apps.extend(get_apps(test_package))
+                test_pkg = import_module(test_module.__package__)
+                test_apps.extend(get_apps(test_pkg))
                 inspected.add(test_module.__package__)
+
+                if PKG_NAME_APP_DISCOVERY:
+                    subpkg = test_module.__package__.split('.')[-1]
+                    try:
+                        test_apps.append(app_pkgs[subpkg])
+                    except KeyError:
+                        pass
 
         inspected.add(class_name)
         coverage_apps.update(test_apps)
