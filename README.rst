@@ -72,7 +72,7 @@ Settings
   The name of the iterable ``django-discoverage`` looks for in the three places
   listed above. Defaults to ``TESTS_APPS``.
 
-``OMIT_MODULES``
+``COVERAGE_OMIT_MODULES``
   Modules not to be traced by ``coverage``. See the `coverage API
   documentation`_ for more details. Defaults to ``['*test*']``.
 

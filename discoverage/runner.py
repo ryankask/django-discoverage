@@ -1,7 +1,7 @@
 import coverage
 from discover_runner import DiscoverRunner
 
-from discoverage.settings import OMIT_MODULES, COVERAGE_EXCLUDE_PATTERNS
+from discoverage.settings import COVERAGE_OMIT_MODULES, COVERAGE_EXCLUDE_PATTERNS
 from discoverage.utils import find_coverage_apps, get_all_modules
 
 
@@ -13,7 +13,7 @@ class DiscoverageRunner(DiscoverRunner):
         return self._suite
 
     def run_tests(self, test_labels, extra_tests=None, **kwargs):
-        cov = coverage.coverage(omit=OMIT_MODULES)
+        cov = coverage.coverage(omit=COVERAGE_OMIT_MODULES)
 
         for pattern in COVERAGE_EXCLUDE_PATTERNS:
             cov.exclude(pattern)
