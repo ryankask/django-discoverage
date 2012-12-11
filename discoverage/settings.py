@@ -6,6 +6,12 @@ TESTED_APPS_VAR_NAME = getattr(settings, 'TESTED_APPS_VAR_NAME', 'TESTS_APPS')
 
 # Modules not to trace
 OMIT_MODULES = getattr(settings, 'OMIT_MODULES', ['*test*'])
+COVERAGE_EXCLUDE_PATTERNS = getattr(settings, 'COVERAGE_EXCLUDE_PATTERNS', [
+    r'def __unicode__\(self\):',
+    r'def __str__\(self\):',
+    r'def get_absolute_url\(self\):',
+    r'from .* import .*', 'import .*',
+])
 
 # Determines whether the apps to be included in the coverage report
 # should be inferred from the test's subpackage name

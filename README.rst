@@ -74,11 +74,18 @@ Settings
 
 ``OMIT_MODULES``
   Modules not to be traced by ``coverage``. See the `coverage API
-  documentation
-  <http://nedbatchelder.com/code/coverage/api.html#coverage.coverage>`_ for more
-  details. Defaults to ``['*test*']``.
+  documentation`_ for more details. Defaults to ``['*test*']``.
 
-TODO
-----
+``COVERAGE_EXCLUDE_PATTERNS``
+  A list of of regular expressions that impact coverage reporting. If a line of
+  tested code matches one of the patterns in the list, it will not count as a
+  missed line. See the `coverage API documentation`_ for more details.
 
-* Add more settings to control ``coverage``
+  Defaults to:
+
+  * ``def get_absolute_url(self):``
+  * ``def __unicode__(self):``
+  * ``def __str__(self):``
+  * Any statement with ``import *`` in it
+
+.. _Coverage API documentation: http://nedbatchelder.com/code/coverage/api.html#coverage.coverage
