@@ -10,7 +10,8 @@ COVERAGE_EXCLUDE_PATTERNS = getattr(settings, 'COVERAGE_EXCLUDE_PATTERNS', [
     r'def __unicode__\(self\):',
     r'def __str__\(self\):',
     r'def get_absolute_url\(self\):',
-    r'from .* import .*', 'import .*',
+    r'from .* import .*',
+    r'import .*',
 ])
 
 # Determines whether the apps to be included in the coverage report
