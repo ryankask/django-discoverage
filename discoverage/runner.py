@@ -1,8 +1,8 @@
 import coverage
 from discover_runner import DiscoverRunner
 
-from discoverage.settings import COVERAGE_OMIT_MODULES, COVERAGE_EXCLUDE_PATTERNS
-from discoverage.utils import find_coverage_apps, get_all_modules
+from discoverage.settings import COVERAGE_OMIT_MODULES, COVERAGE_EXCLUDE_PATTERNS, MODULE_NAME_DISCOVERY_PATTERN, MODULE_NAME_APP_DISCOVERY, PKG_NAME_APP_DISCOVERY
+from discoverage.utils import find_coverage_apps, get_all_modules, CoverageHandler
 
 
 class DiscoverageRunner(DiscoverRunner):
@@ -20,25 +20,15 @@ class DiscoverageRunner(DiscoverRunner):
     def run_tests(self, test_labels, extra_tests=None, **kwargs):
         if not self.perform_coverage:
             return super(DiscoverageRunner, self).run_tests(test_labels, extra_tests=extra_tests, **kwargs)
-
-        cov = coverage.coverage(omit=COVERAGE_OMIT_MODULES)
-
-        for pattern in COVERAGE_EXCLUDE_PATTERNS:
-            cov.exclude(pattern)
-
-        cov.start()
-
-        result = super(DiscoverageRunner, self).run_tests(
-            test_labels, extra_tests, **kwargs)
-
-        cov.stop()
-
         suite = self.build_suite(test_labels, extra_tests)
-        apps = find_coverage_apps(suite)
-        app_modules = get_all_modules(apps)
 
-        if app_modules:
-            print
-            cov.report(app_modules)
+        coverage = CoverageHandler(suite, COVERAGE_OMIT_MODULES,
+            COVERAGE_EXCLUDE_PATTERNS,
+            MODULE_NAME_APP_DISCOVERY,
+            MODULE_NAME_DISCOVERY_PATTERN,
+            PKG_NAME_APP_DISCOVERY)
+        with coverage:
+            result = super(DiscoverageRunner, self).run_tests(
+                test_labels, extra_tests, **kwargs)
 
         return result

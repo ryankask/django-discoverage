@@ -1,72 +1,97 @@
+from coverage import coverage
 import re
 
 from django.conf import settings
 from django.utils.importlib import import_module
 from pkgutil import walk_packages
 
-from discoverage.settings import (TESTED_APPS_VAR_NAME, PKG_NAME_APP_DISCOVERY,
-                                  MODULE_NAME_APP_DISCOVERY,
-                                  MODULE_NAME_DISCOVERY_PATTERN)
+from discoverage.settings import TESTED_APPS_VAR_NAME
 
-def get_apps(obj):
-    return list(getattr(obj, TESTED_APPS_VAR_NAME, []))
+class CoverageHandler(coverage):
+    def __init__(self, suite, omit, excluded_patterns, module_name_app_discovery, module_name_discovery_pattern,
+                 pkg_name_app_discovery):
+        super(CoverageHandler, self).__init__(omit=omit)
+        self.suite = suite
+        self.module_name_discovery_pattern = module_name_discovery_pattern
+        self.module_name_app_discovery = module_name_app_discovery
+        self.pkg_name_app_discovery = pkg_name_app_discovery
 
-def find_coverage_apps(suite):
-    coverage_apps = set()
-    inspected = set()
-    app_pkgs = dict((app.split('.')[-1], app) for app in settings.INSTALLED_APPS)
+        for pattern in excluded_patterns:
+            self.exclude(pattern)
 
-    for test in suite:
-        class_name = repr(test.__class__)
+    def __enter__(self):
+        self.start()
 
-        if class_name in inspected:
-            continue
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.stop()
 
-        test_apps = get_apps(test)
+        apps = self.find_coverage_apps()
+        app_modules = self.get_all_modules(apps)
 
-        if test.__module__ not in inspected:
-            test_module = import_module(test.__module__)
-            test_apps.extend(get_apps(test_module))
-            inspected.add(test.__module__)
-            pkg = test_module.__package__
+        self.actual_coverage_percent = self.report(app_modules)
 
-            if MODULE_NAME_APP_DISCOVERY:
-                module_name = test.__module__.split(pkg + '.')[-1]
+    def get_apps(self, obj):
+        return list(getattr(obj, TESTED_APPS_VAR_NAME, []))
 
-                try:
-                    guessed_app_name = re.match(MODULE_NAME_DISCOVERY_PATTERN,
-                                                module_name).group(1)
-                    test_apps.append(app_pkgs[guessed_app_name])
-                except (KeyError, AttributeError, IndexError):
-                    pass
+    def find_coverage_apps(self):
+        coverage_apps = set()
+        inspected = set()
+        app_pkgs = dict((app.split('.')[-1], app) for app in settings.INSTALLED_APPS)
 
-            if pkg not in inspected:
-                test_pkg = import_module(pkg)
-                test_apps.extend(get_apps(test_pkg))
-                inspected.add(pkg)
+        for test in self.suite:
+            class_name = repr(test.__class__)
 
-                if PKG_NAME_APP_DISCOVERY:
-                    subpkg = pkg.split('.')[-1]
+            if class_name in inspected:
+                continue
+
+            test_apps = self.get_apps(test)
+
+            if test.__module__ not in inspected:
+                test_module = import_module(test.__module__)
+                test_apps.extend(self.get_apps(test_module))
+                inspected.add(test.__module__)
+                pkg = test_module.__package__
+
+                if self.module_name_app_discovery:
+                    module_name = test.__module__.split(pkg + '.')[-1]
+
                     try:
-                        test_apps.append(app_pkgs[subpkg])
-                    except KeyError:
+                        guessed_app_name = re.match(self.module_name_discovery_pattern,
+                            module_name).group(1)
+                        test_apps.append(app_pkgs[guessed_app_name])
+                    except (KeyError, AttributeError, IndexError):
                         pass
 
-        inspected.add(class_name)
-        coverage_apps.update(test_apps)
+                if pkg not in inspected:
+                    test_pkg = import_module(pkg)
+                    test_apps.extend(self.get_apps(test_pkg))
+                    inspected.add(pkg)
 
-    return list(coverage_apps)
+                    if self.pkg_name_app_discovery:
+                        subpkg = pkg.split('.')[-1]
+                        try:
+                            test_apps.append(app_pkgs[subpkg])
+                        except KeyError:
+                            pass
 
-def get_all_modules(apps):
-    modules = set()
+            inspected.add(class_name)
+            coverage_apps.update(test_apps)
 
-    for app in apps:
-        app_module = import_module(app)
-        modules.add(app_module)
-        app_path = app_module.__path__
+        return list(coverage_apps)
 
-        for pkg_data in walk_packages(app_path, prefix=u'{0}.'.format(app)):
-            current_module = import_module(pkg_data[1])
-            modules.add(current_module)
+    def get_all_modules(self, apps):
+        modules = set()
 
-    return list(modules)
+        for app in apps:
+            app_module = import_module(app)
+            modules.add(app_module)
+            app_path = app_module.__path__
+
+            for pkg_data in walk_packages(app_path, prefix=u'{0}.'.format(app)):
+                current_module = import_module(pkg_data[1])
+                modules.add(current_module)
+
+        return list(modules)
+
+    def report(self, app_modules):
+        return super(CoverageHandler, self).report(app_modules)
