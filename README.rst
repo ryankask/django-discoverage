@@ -10,6 +10,15 @@ Inspired by `django-coverage <https://bitbucket.org/kmike/django-coverage/>`_.
 Usage
 -----
 
+To run the tests type:
+
+    ./manage.py test [options] [appname ...]
+
+To run the tests without code coverage (i.e. run django-discover-runner instead) type:
+
+    ./manage.py test --no-coverage [options] [appname ...]
+
+
 One of the objectives of ``django-discover-runner`` is to allow the separation
 of a Django app's tests from the code it's testing. Since tests no longer reside
 in an app, ``django-discoverage`` needs a different way to know which apps to
