@@ -6,6 +6,11 @@ from discoverage.utils import find_coverage_apps, get_all_modules
 
 
 class DiscoverageRunner(DiscoverRunner):
+    def __init__(self, perform_coverage=True, **kwargs):
+        self.perform_coverage = perform_coverage
+
+        super(DiscoverageRunner, self).__init__(**kwargs)
+
     def build_suite(self, *args, **kwargs):
         if not hasattr(self, '_suite'):
             self._suite = super(DiscoverageRunner, self).build_suite(
@@ -13,6 +18,9 @@ class DiscoverageRunner(DiscoverRunner):
         return self._suite
 
     def run_tests(self, test_labels, extra_tests=None, **kwargs):
+        if not self.perform_coverage:
+            return super(DiscoverageRunner, self).run_tests(test_labels, extra_tests=extra_tests, **kwargs)
+
         cov = coverage.coverage(omit=COVERAGE_OMIT_MODULES)
 
         for pattern in COVERAGE_EXCLUDE_PATTERNS:
