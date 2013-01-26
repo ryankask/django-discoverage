@@ -1,0 +1,2 @@
+coverage>=3.5.3
+django-discover-runner>=0.2.2
