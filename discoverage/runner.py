@@ -1,13 +1,30 @@
-import coverage
 from discover_runner import DiscoverRunner
-
-from discoverage.settings import COVERAGE_OMIT_MODULES, COVERAGE_EXCLUDE_PATTERNS
-from discoverage.utils import find_coverage_apps, get_all_modules
-
+from discoverage.utils import CoverageHandler
 
 class DiscoverageRunner(DiscoverRunner):
-    def __init__(self, perform_coverage=True, **kwargs):
+    def __init__(self, perform_coverage=True,
+                 html=False,
+                 html_reports_directory=None,
+                 xml=False,
+                 xml_reports_file=None,
+                 annotate=False,
+                 annotate_reports_directory=None,
+                 data=False,
+                 data_file=None,
+                 combine=False,
+                 branch_coverage=False, **kwargs):
         self.perform_coverage = perform_coverage
+
+        self.coverage_handler = CoverageHandler(html=html,
+            html_reports_directory=html_reports_directory,
+            xml=xml,
+            xml_reports_file=xml_reports_file,
+            annotate=annotate,
+            annotate_reports_directory=annotate_reports_directory,
+            data=data,
+            data_file=data_file,
+            combine=combine,
+            branch_coverage=branch_coverage)
 
         super(DiscoverageRunner, self).__init__(**kwargs)
 
@@ -21,24 +38,15 @@ class DiscoverageRunner(DiscoverRunner):
         if not self.perform_coverage:
             return super(DiscoverageRunner, self).run_tests(test_labels, extra_tests=extra_tests, **kwargs)
 
-        cov = coverage.coverage(omit=COVERAGE_OMIT_MODULES)
-
-        for pattern in COVERAGE_EXCLUDE_PATTERNS:
-            cov.exclude(pattern)
-
-        cov.start()
+        self.coverage_handler.start()
 
         result = super(DiscoverageRunner, self).run_tests(
             test_labels, extra_tests, **kwargs)
 
-        cov.stop()
+        self.coverage_handler.stop()
 
         suite = self.build_suite(test_labels, extra_tests)
-        apps = find_coverage_apps(suite)
-        app_modules = get_all_modules(apps)
 
-        if app_modules:
-            print
-            cov.report(app_modules)
+        self.coverage_handler.report(suite)
 
         return result

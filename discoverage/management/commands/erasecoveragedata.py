@@ -1,7 +1,7 @@
 from optparse import make_option
+from coverage import coverage
 import os
 from django.core.management import BaseCommand, CommandError
-from discoverage.utils import CoverageHandler
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
@@ -10,10 +10,12 @@ class Command(BaseCommand):
             help='Specifies the coverage data file to be erased. Defaults to .coverage'),
         )
 
-    def handle(self, filename='.coverage', **options):
-        cov = CoverageHandler(data_file=filename)
+    coverage_class = coverage
 
+    def handle(self, filename='.coverage', **options):
         if not os.path.exists(filename):
             raise CommandError("'%s' coverage data file does not exist." % filename)
+
+        cov = self.coverage_class(data_file=filename)
 
         cov.erase()
