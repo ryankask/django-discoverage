@@ -1,8 +1,8 @@
+from pkgutil import walk_packages
 import re
 
 from django.conf import settings
 from django.utils.importlib import import_module
-from pkgutil import walk_packages
 
 from discoverage.settings import (TESTED_APPS_VAR_NAME, PKG_NAME_APP_DISCOVERY,
                                   MODULE_NAME_APP_DISCOVERY,
@@ -14,7 +14,8 @@ def get_apps(obj):
 def find_coverage_apps(suite):
     coverage_apps = set()
     inspected = set()
-    app_pkgs = dict((app.split('.')[-1], app) for app in settings.INSTALLED_APPS)
+    app_pkgs = dict((app.split('.')[-1], app)
+                    for app in settings.INSTALLED_APPS)
 
     for test in suite:
         class_name = repr(test.__class__)
