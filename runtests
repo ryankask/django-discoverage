@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+EXPECTED_APPS="accounts bookmarks event links registration todo.notes"
+
+result=$(test_project/manage.py test 2>&1)
+failed=0
+
+for app in $EXPECTED_APPS
+do
+    if [[ ! "$result" =~ "$app"  ]]
+    then
+        echo "*** $app not found"
+        failed=$((failed+1))
+    fi
+done
+
+if [[ $failed -gt 0  ]]
+then
+    echo "*** FAILURE: $failed app(s) not found. ***"
+    exit 1
+else
+    echo "*** All apps found ***"
+fi

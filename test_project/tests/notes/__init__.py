@@ -1,0 +1,1 @@
+TESTS_APPS = ['links']
