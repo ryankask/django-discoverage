@@ -45,7 +45,7 @@ def find_coverage_apps(suite):
                 inspected.add(pkg)
 
                 if PKG_NAME_APP_DISCOVERY:
-                    subpkg = pkg.rsplit('.')[-1]
+                    subpkg = pkg.rsplit('.', 1)[-1]
                     try:
                         test_apps.append(app_pkgs[subpkg])
                     except KeyError:
