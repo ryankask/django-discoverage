@@ -29,11 +29,9 @@ def find_coverage_apps(suite):
             test_module = import_module(test.__module__)
             test_apps.extend(get_apps(test_module))
             inspected.add(test.__module__)
-            pkg = test_module.__package__
+            pkg, module_name = test.__module__.rsplit('.', 1)
 
             if MODULE_NAME_APP_DISCOVERY:
-                module_name = test.__module__.split(pkg + '.')[-1]
-
                 try:
                     guessed_app_name = re.match(MODULE_NAME_DISCOVERY_PATTERN,
                                                 module_name).group(1)
@@ -47,7 +45,7 @@ def find_coverage_apps(suite):
                 inspected.add(pkg)
 
                 if PKG_NAME_APP_DISCOVERY:
-                    subpkg = pkg.split('.')[-1]
+                    subpkg = pkg.rsplit('.')[-1]
                     try:
                         test_apps.append(app_pkgs[subpkg])
                     except KeyError:
@@ -66,7 +64,7 @@ def get_all_modules(apps):
         modules.add(app_module)
         app_path = app_module.__path__
 
-        for pkg_data in walk_packages(app_path, prefix=u'{0}.'.format(app)):
+        for pkg_data in walk_packages(app_path, prefix='{0}.'.format(app)):
             current_module = import_module(pkg_data[1])
             modules.add(current_module)
 

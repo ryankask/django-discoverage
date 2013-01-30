@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import codecs
 import os.path
 import re
 from setuptools import setup, find_packages
@@ -8,11 +9,12 @@ def pkg_path(*components):
     return os.path.realpath(path)
 
 def get_readme():
-    with open(pkg_path('README.rst'), 'r') as readme:
+    with codecs.open(pkg_path('README.rst'), encoding='utf-8') as readme:
         return readme.read()
 
 def get_version():
-    with open(pkg_path('discoverage', '__init__.py'), 'r') as init:
+    init_path = pkg_path('discoverage', '__init__.py')
+    with codecs.open(init_path, encoding='utf-8') as init:
         contents = init.read()
         match = re.search(r'__version__ = [\'"]([.\w]+)[\'"]', contents)
         return match.group(1)
@@ -38,6 +40,8 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
         'Topic :: Software Development :: Testing',
     ]
 )
