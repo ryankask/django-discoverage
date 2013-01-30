@@ -30,6 +30,7 @@ INSTALLED_APPS = (
     'bookmarks', # In tests.notes.test_bookmarks.TESTS_APPS
     'links', # In tests.notes.TESTS_APPS
     'event', # Module name app discovery
+    'planner',
 )
 
 TEST_RUNNER = 'discoverage.DiscoverageRunner'

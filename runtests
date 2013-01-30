@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-EXPECTED_APPS="accounts bookmarks event links registration todo.notes"
+EXPECTED_APPS="accounts bookmarks event links registration todo.notes planner"
 
 result=$(test_project/manage.py test 2>&1)
 failed=0
