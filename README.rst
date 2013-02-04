@@ -104,3 +104,13 @@ Settings
   * Any statement with ``import *`` in it
 
 .. _Coverage API documentation: http://nedbatchelder.com/code/coverage/api.html#coverage.coverage
+
+Change Log
+----------
+
+0.6.0 (2013-02-05)
+~~~~~~~~~~~~~~~~~~
+
+* Python 3 support
+* Test suite for app discovery methods
+* ``--no-coverage`` option
