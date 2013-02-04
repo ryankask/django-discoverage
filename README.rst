@@ -88,8 +88,8 @@ Settings
   listed above. Defaults to ``TESTS_APPS``.
 
 ``COVERAGE_OMIT_MODULES``
-  Modules not to be traced by ``coverage``. See the `coverage API
-  documentation`_ for more details. Defaults to ``['*test*']``.
+  A list of modules not to be traced by ``coverage``. See the `coverage API
+  documentation`_ for more details. Defaults to ``[]``.
 
 ``COVERAGE_EXCLUDE_PATTERNS``
   A list of of regular expressions that impact coverage reporting. If a line of

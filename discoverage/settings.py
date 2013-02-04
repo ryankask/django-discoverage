@@ -5,7 +5,7 @@ from django.conf import settings
 TESTED_APPS_VAR_NAME = getattr(settings, 'TESTED_APPS_VAR_NAME', 'TESTS_APPS')
 
 # Coverage settings
-COVERAGE_OMIT_MODULES = getattr(settings, 'COVERAGE_OMIT_MODULES', ['*test*'])
+COVERAGE_OMIT_MODULES = getattr(settings, 'COVERAGE_OMIT_MODULES', [])
 COVERAGE_EXCLUDE_PATTERNS = getattr(settings, 'COVERAGE_EXCLUDE_PATTERNS', [
     r'def __unicode__\(self\):',
     r'def __str__\(self\):',
