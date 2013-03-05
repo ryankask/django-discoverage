@@ -1,5 +1,6 @@
 from optparse import make_option
 
+from django.conf import settings
 from django.core.management.commands.test import Command as TestCommand
 
 
@@ -13,3 +14,9 @@ class Command(TestCommand):
             help='Specifies that no code coverage will be performed.'
         ),
     )
+
+    def handle(self, *args, **kwargs):
+        if 'south' in settings.INSTALLED_APPS:
+            from south.management.commands import patch_for_test_db_setup
+            patch_for_test_db_setup()
+        super(Command, self).handle(*args, **kwargs)
