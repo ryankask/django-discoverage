@@ -108,7 +108,7 @@ Settings
 Change Log
 ----------
 
-0.6.1 (2013-03-05)
+0.6.1 (2013-03-06)
 ~~~~~~~~~~~~~~~~~~
 
 * Include South's test database patching
