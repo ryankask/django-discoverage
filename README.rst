@@ -108,6 +108,11 @@ Settings
 Change Log
 ----------
 
+0.6.2 (2013-03-13)
+~~~~~~~~~~~~~~~~~~
+
+* Change the default of ``COVERAGE_OMIT_MODULES`` back to ``['*test*']``
+
 0.6.1 (2013-03-06)
 ~~~~~~~~~~~~~~~~~~
 
