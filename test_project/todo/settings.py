@@ -24,6 +24,7 @@ WSGI_APPLICATION = 'todo.wsgi.application'
 
 # Next to each installed app is the reason why it was included in the report
 INSTALLED_APPS = (
+    'discoverage',
     'accounts', # Package name app discovery
     'todo.notes', # Package name app discovery
     'registration', # In tests.accounts.test_registration.UtilsTests.TESTS_APPS

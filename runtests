@@ -2,7 +2,9 @@
 
 EXPECTED_APPS="accounts bookmarks event links registration todo.notes planner"
 
-result=$(test_project/manage.py test 2>&1)
+cd test_project
+result=$(./manage.py test 2>&1)
+
 failed=0
 
 for app in $EXPECTED_APPS

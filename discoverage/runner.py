@@ -1,5 +1,8 @@
 import coverage
-from discover_runner import DiscoverRunner
+try:
+    from discover_runner import DiscoverRunner
+except ImportError:
+    from django.test.runner import DiscoverRunner
 
 from discoverage.settings import (COVERAGE_OMIT_MODULES,
                                   COVERAGE_EXCLUDE_PATTERNS)

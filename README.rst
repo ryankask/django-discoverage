@@ -108,6 +108,12 @@ Settings
 Change Log
 ----------
 
+0.7.0 (2013-06-05)
+~~~~~~~~~~~~~~~~~~
+
+* Support for Django 1.6 and its implementation of
+  `DiscoverRunner <https://docs.djangoproject.com/en/dev/topics/testing/advanced/#django.test.runner.DiscoverRunner>`_.
+
 0.6.2 (2013-03-13)
 ~~~~~~~~~~~~~~~~~~
 
