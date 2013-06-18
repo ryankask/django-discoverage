@@ -108,6 +108,13 @@ Settings
 Change Log
 ----------
 
+0.7.1 (2013-06-18)
+~~~~~~~~~~~~~~~~~~
+
+* Only install django-discover-runner if the version of Django installed is
+  lower than 1.6
+
+
 0.7.0 (2013-06-05)
 ~~~~~~~~~~~~~~~~~~
 
