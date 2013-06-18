@@ -19,6 +19,20 @@ def get_version():
         match = re.search(r'__version__ = [\'"]([.\w]+)[\'"]', contents)
         return match.group(1)
 
+# If ``DiscoverRunner`` is available from Django, we don't require
+# django-discover-runner
+
+install_requires = ['coverage>=3.6']
+
+try:
+    # Settings needs to be configured before ``DiscoverRunner``
+    # can be imported
+    from django.conf import settings
+    settings.configure()
+    from django.test.runner import DiscoverRunner
+except ImportError:
+    install_requires.append('django-discover-runner>=0.4')
+
 setup(
     name='django-discoverage',
     version=get_version(),
@@ -26,8 +40,9 @@ setup(
     author_email='dev@ryankaskel.com',
     url='https://github.com/ryankask/django-discoverage',
     packages=find_packages(),
-    install_requires=['coverage>=3.6', 'django-discover-runner>=0.4'],
-    description='Jannis Leidel and Carl Meyer\'s django-discover-runner with coverage.',
+    install_requires=install_requires,
+    description=('Jannis Leidel and Carl Meyer\'s django-discover-runner '
+                 'with coverage.'),
     long_description=get_readme(),
     license='BSD',
     classifiers=[
