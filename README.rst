@@ -1,11 +1,16 @@
 django-discoverage
 ==================
 
-Adds `coverage <http://nedbatchelder.com/code/coverage/>`_ to Carl Meyer and
-Jannis Leidel's `django-discover-runner
+Adds `coverage <http://nedbatchelder.com/code/coverage/>`_ to Django 1.6's test
+runner and Carl Meyer and Jannis Leidel's `django-discover-runner
 <https://github.com/jezdez/django-discover-runner>`_.
 
 Inspired by `django-coverage <https://bitbucket.org/kmike/django-coverage/>`_.
+
+django-discoverage works with Django 1.4 and above. If you are using Django 1.4
+or 1.5, django-discover-runner is required and will be automatically
+installed. That package backports the implementation of ``DiscoverRunner``
+included in Django 1.6.
 
 Quick usage
 -----------
@@ -25,11 +30,11 @@ If you want to use the ``--no-coverage`` option, make sure you add
 Detailed usage
 --------------
 
-One of the objectives of ``django-discover-runner`` is to allow the separation
-of a Django app's tests from the code it's testing. Since tests no longer reside
-in an app, ``django-discoverage`` needs a different way to know which apps to
-include in the coverage report. The runner does this in two ways which are
-discussed below.
+One of the objectives of Django's ``DiscoverRunner`` (previously
+``django-discover-runner``) is to allow the separation of a Django app's tests
+from the code it's testing. Since tests no longer reside in an app,
+``django-discoverage`` needs a different way to know which apps to include in
+the coverage report. The runner does this in two ways which are discussed below.
 
 First, it tries to infer which apps you are testing from the name of the package
 in which the test's module lives. For example, if you have an app ``blog`` and
@@ -108,12 +113,17 @@ Settings
 Change Log
 ----------
 
+0.7.2 (2013-06-19)
+~~~~~~~~~~~~~~~~~~
+
+* Require django-discover-runner 1.0 which now backports Django 1.6's
+  implementation of ``DiscoverRunner``.
+
 0.7.1 (2013-06-18)
 ~~~~~~~~~~~~~~~~~~
 
 * Only install django-discover-runner if the version of Django installed is
   lower than 1.6
-
 
 0.7.0 (2013-06-05)
 ~~~~~~~~~~~~~~~~~~

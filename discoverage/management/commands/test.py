@@ -1,12 +1,7 @@
 from optparse import make_option
 
-import django
 from django.conf import settings
-
-if django.VERSION[0] == 1 and django.VERSION[1] >= 6:
-    from django.core.management.commands.test import Command as TestCommand
-else:
-    from discover_runner.management.commands.test import Command as TestCommand
+from django.core.management.commands.test import Command as TestCommand
 
 
 class Command(TestCommand):

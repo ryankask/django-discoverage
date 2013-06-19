@@ -31,7 +31,7 @@ try:
     settings.configure()
     from django.test.runner import DiscoverRunner
 except ImportError:
-    install_requires.append('django-discover-runner>=0.4')
+    install_requires.append('django-discover-runner==1.0')
 
 setup(
     name='django-discoverage',
@@ -41,8 +41,7 @@ setup(
     url='https://github.com/ryankask/django-discoverage',
     packages=find_packages(),
     install_requires=install_requires,
-    description=('Jannis Leidel and Carl Meyer\'s django-discover-runner '
-                 'with coverage.'),
+    description=('Adds coverage to Django\'s DiscoverRunner.'),
     long_description=get_readme(),
     license='BSD',
     classifiers=[
