@@ -1,7 +1,9 @@
 import coverage
+from django.core.exceptions import ImproperlyConfigured
+
 try:
     from discover_runner import DiscoverRunner
-except ImportError:
+except (ImportError, ImproperlyConfigured):
     from django.test.runner import DiscoverRunner
 
 from discoverage.settings import (COVERAGE_OMIT_MODULES,
