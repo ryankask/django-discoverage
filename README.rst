@@ -97,7 +97,7 @@ Settings
   documentation`_ for more details. Defaults to ``['*test*']``.
 
 ``COVERAGE_EXCLUDE_PATTERNS``
-  A list of of regular expressions that impact coverage reporting. If a line of
+  A list of regular expressions that impact coverage reporting. If a line of
   tested code matches one of the patterns in the list, it will not count as a
   missed line. See the `coverage API documentation`_ for more details.
 
@@ -112,6 +112,12 @@ Settings
 
 Change Log
 ----------
+
+1.0.0 (2013-08-27)
+~~~~~~~~~~~~~~~~~~
+
+* Handle ``ImproperlyConfigured`` exception raised by ``django-discover-runner``
+* The runner is now successfully used in several projects so it's moving to 1.0.
 
 0.7.2 (2013-06-19)
 ~~~~~~~~~~~~~~~~~~
