@@ -15,11 +15,10 @@ included in Django 1.6.
 Quick usage
 -----------
 
-Change TEST_RUNNER in your project settings to enable django-discoverage as the
-project test runner:
+Change ``TEST_RUNNER`` in your project settings to enable django-discoverage as
+the project test runner:
 
-    -TEST_RUNNER = 'django.test.runner.DiscoverRunner'
-    +TEST_RUNNER = 'discoverage.runner.DiscoverageRunner'
+    TEST_RUNNER = 'discoverage.DiscoverageRunner'
 
 To run the tests, type:
 
